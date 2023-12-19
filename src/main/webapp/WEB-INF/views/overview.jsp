@@ -1,10 +1,12 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Weather</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="shortcut icon" href="resources/img/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="resources/css/weather.css"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/weather.css"/>
 </head>
 <body>
 <ul class="ticker">
@@ -27,7 +29,7 @@
         <div id="radar-card" class="card medium">
             <h2>Wakefield Radar</h2>
             <div id="radar-wrap">
-                <img src="/weather/radar.gif" alt="Wakefield Radar"/>
+                <img src="${pageContext.request.contextPath}/radar.gif" alt="Wakefield Radar"/>
             </div>
         </div>
         <div class="card large">
@@ -48,6 +50,7 @@
     </div>
 </div>
 <script type="text/javascript" src="//ace.jlab.org/cdn/jquery/1.10.2.min.js"></script>
-<script type="text/javascript" src="resources/js/weather.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>
+<div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/></div>
 </body>
 </html>
