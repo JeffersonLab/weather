@@ -7,7 +7,7 @@ jlab.triCharWeekNames = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
 jlab.weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 jlab.loadHourlyWeather = function() {
     var request = jQuery.ajax({
-        url: "/weather-data/hourly-weather.json",
+        url: "/weather/hourly-forecast.json",
         type: "GET",
         dataType: "json"
     });
@@ -209,7 +209,6 @@ jlab.loadHourlyWeather = function() {
 
     request.error(function(xhr, textStatus) {
         window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-        alert('Unable query weather: server did not handle request');
     });
 
     request.always(function() {
@@ -218,7 +217,7 @@ jlab.loadHourlyWeather = function() {
 
 jlab.loadDailyWeather = function() {
     var request = jQuery.ajax({
-        url: "/weather-data/daily-weather.json",
+        url: "/weather/daily-forecast.json",
         type: "GET",
         dataType: "json"
     });
@@ -289,7 +288,6 @@ jlab.loadDailyWeather = function() {
 
     request.error(function(xhr, textStatus) {
         window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-        alert('Unable query weather: server did not handle request');
     });
 
     request.always(function() {
@@ -298,7 +296,7 @@ jlab.loadDailyWeather = function() {
 
 jlab.loadAlerts = function() {
     var request = jQuery.ajax({
-        url: "/weather-data/alerts.json",
+        url: "/weather/alerts.json",
         type: "GET",
         dataType: "json"
     });
@@ -327,7 +325,6 @@ jlab.loadAlerts = function() {
 
     request.error(function(xhr, textStatus) {
         window.console && console.log('Unable to query alerts server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
-        alert('Unable query alerts: server did not handle request');
     });
 
     request.always(function() {
