@@ -1,0 +1,169 @@
+body {
+    font-family: 'Georgia';
+    padding: 0;
+    margin: 0;
+}
+h1 {
+    margin-top: 0;
+}
+h1,
+h2,
+.link-div {
+    text-align: center;
+}
+.link-div {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.link-div a {
+    color: gray;
+}
+#daily-table,
+#hourly-table {
+    border-collapse: collapse;
+    font-size: 20px;
+    margin: 0 auto;
+}
+#daily-table th,
+#daily-table td,
+#hourly-table th,
+#hourly-table td {
+    padding: 8px;
+}
+#hourly-table td {
+    max-width: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#daily-table td {
+    min-width: 160px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.min-temp {
+    font-size: 0.8em;
+    color: darkgrey;
+}
+.divider-row {
+    background-color: darkgray;
+}
+#hourly-table .divider-row th,
+#hourly-table .divider-row td {
+    padding: 1px;
+}
+.info-row,
+.detail-row {
+    border-top: 1px solid lightgray;
+}
+.detail-row {
+    display: none;
+}
+.responsive-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-auto-flow: dense;
+    gap: 1em;
+    padding: 1em;
+}
+.medium {
+    grid-column: span 2;
+}
+.large {
+    grid-column: span 3;
+}
+.card {
+    padding: 1em;
+    /*border: 1px solid black;*/
+}
+h2 {
+    color: gray;
+    font-size: 1.25em;
+    margin-top: 0;
+}
+#radar-wrap {
+    text-align: center;
+}
+/*@media (max-width: 600px) {
+    #radar-wrap img {
+        width: 300px;
+        height: 275px;
+    }
+    #radar-card.medium {
+        grid-column: span 1;
+    }
+}
+@media (min-width: 1100px) {
+    #radar-wrap img {
+        width: 1050px;
+        height: 962.5px;
+    }
+    #radar-card.medium {
+        grid-column: span 3;
+    }
+}*/
+#detail-wrap {
+    padding: 2em;
+}
+
+#ticker-detail {
+    font-size: 1.2em;
+    font-family: monospace;
+    list-style: none;
+}
+#ticker-detail li {
+    margin-top: 1em;
+}
+
+#ticker-detail li b {
+    color: red;
+}
+
+.ticker {
+    height: 25px;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+}
+.ticker .alert {
+    /*white-space: nowrap;*/
+    font-family: monospace;
+    font-size: 2em;
+    color: red;
+    position: absolute;
+    width: 100%; /*replace with auto to prevent message from being truncated, BUT message speed then is dependent on size (might be too fast)*/
+    height: 100%;
+    margin: 0;
+    line-height: 25px;
+    text-align: center;
+    /* Starting position */
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);
+    transform:translateX(100%);
+    /* Apply animation to this element */
+    -moz-animation: ticker 30s linear infinite;
+    -webkit-animation: ticker 30s linear infinite;
+    animation: ticker 30s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes ticker {
+    0%   { -moz-transform: translateX(100%); }
+    100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes ticker {
+    0%   { -webkit-transform: translateX(100%); }
+    100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes ticker {
+    0%   {
+        -moz-transform: translateX(100%); /* Firefox bug fix */
+        -webkit-transform: translateX(100%); /* Firefox bug fix */
+        transform: translateX(100%);
+    }
+    100% {
+        -moz-transform: translateX(-100%); /* Firefox bug fix */
+        -webkit-transform: translateX(-100%); /* Firefox bug fix */
+        transform: translateX(-100%);
+    }
+}

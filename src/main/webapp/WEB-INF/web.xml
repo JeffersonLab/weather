@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <context-param>
+        <param-name>appName</param-name>
+        <param-value>Weather</param-value>
+    </context-param>
+    <context-param>
+        <param-name>appShortName</param-name>
+        <param-value>Weather</param-value>
+    </context-param>
+    <context-param>
+        <param-name>resourceVersionNumber</param-name>
+        <param-value>4</param-value>
+    </context-param>
+    <context-param>
+        <param-name>releaseNumber</param-name>
+        <param-value>1.4.0</param-value>
+    </context-param>
+    <context-param>
+        <param-name>releaseDate</param-name>
+        <param-value>16 Oct 2019</param-value>
+    </context-param>
+    <session-config>
+        <session-timeout>480</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>true</secure>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+</web-app>
