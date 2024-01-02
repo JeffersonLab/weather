@@ -207,7 +207,7 @@ jlab.loadHourlyWeather = function() {
         }
     });
 
-    request.error(function(xhr, textStatus) {
+    request.fail(function(xhr, textStatus) {
         window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
     });
 
@@ -286,7 +286,107 @@ jlab.loadDailyWeather = function() {
         $heading.text("5 Day Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
     });
 
-    request.error(function(xhr, textStatus) {
+    request.fail(function(xhr, textStatus) {
+        window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+    });
+
+    request.always(function() {
+    });
+};
+
+jlab.loadNWSDailyWeather = function() {
+    var request = jQuery.ajax({
+        url: "/weather/daily-forecast.xml",
+        type: "GET",
+        dataType: "xml"
+    });
+
+    request.done(function(data) {
+        console.log(data);
+
+        let timeArray = new Array(),
+            iconArray = new Array(),
+            phraseArray = new Array(),
+            maxTempArray = new Array(),
+            minTempArray = new Array(),
+            precipArray = new Array();
+
+        let $xmlData = $(data).find("data"),
+            $parameters = $xmlData.find("parameters");
+
+        // There are two summarization=24hourly.  Take first one
+        $xmlData.find("time-layout[summarization=24hourly]").first().find("start-valid-time").each(function() {
+            timeArray.push($(this).text());
+        });
+
+        $parameters.find("conditions-icon icon-link").each(function() {
+            iconArray.push($(this).text());
+        });
+
+        $parameters.find("weather weather-conditions").each(function() {
+            phraseArray.push($(this).attr("weather-summary"));
+        });
+
+        $parameters.find("temperature[type=maximum] value").each(function() {
+            maxTempArray.push($(this).text());
+        });
+
+        $parameters.find("temperature[type=minimum] value").each(function() {
+            minTempArray.push($(this).text());
+        });
+
+        // precipitation probability is every 12 hours.  So we take odd indexes only and ignore overnight 18:00-6:00...
+        $parameters.find("probability-of-precipitation value").odd().each(function() {
+            precipArray.push($(this).text());
+        });
+
+        var $tbody = $("#daily-table tbody"),
+            dailyData = data.DailyForecasts,
+            numDays = 5;
+        var row = '<tr><th></th>';
+        for(var i = 0; i < numDays; i++) {
+            var d = new Date(timeArray[i]),
+                day = d.getDate(),
+                weekDay = d.getDay(),
+                row = row + '<td>' + jlab.triCharWeekNames[weekDay] + ' ' + day + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>';
+        for(var i = 0; i < numDays; i++) {
+            row = row + '<td><img alt="' + iconArray[i] + '" src="' + iconArray[i] + '"/></td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>'
+        for(var i = 0; i < numDays; i++) {
+            row = row + '<td>' + phraseArray[i] + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Temp (°F)</th>';
+        for(var i = 0; i < numDays; i++) {
+            row = row + '<td>' + maxTempArray[i] + '° / <span class="min-temp">' +  minTempArray[i] + '°</span></td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Precipitation</th>';
+        for(var i = 0; i < numDays; i++) {
+            row = row + '<td>' + precipArray[i] + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        var d = new Date(timeArray[0]);
+        var $heading = $("#daily-table-heading");
+        $heading.text("5 Day Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
+    });
+
+    request.fail(function(xhr, textStatus) {
         window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
     });
 
@@ -323,7 +423,7 @@ jlab.loadAlerts = function() {
         }
     });
 
-    request.error(function(xhr, textStatus) {
+    request.fail(function(xhr, textStatus) {
         window.console && console.log('Unable to query alerts server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
     });
 
@@ -344,7 +444,7 @@ $(document).on("click", "#detail-toggle", function() {
 
 $(function() {
     jlab.loadHourlyWeather();
-    jlab.loadDailyWeather();
+    jlab.loadNWSDailyWeather();
     jlab.loadAlerts();
 });
 

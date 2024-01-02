@@ -39,8 +39,8 @@
                 </tbody>
             </table>
             <div class="link-div">
-            <a href="https://www.accuweather.com/en/us/newport-news-va/23606/daily-weather-forecast/336210">Provided
-                by AccuWeather</a>
+            <a href="https://www.weather.gov/akq/">Provided
+                by NWS</a>
             </div>
     </div>
         <div class="card">
@@ -49,7 +49,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="//ace.jlab.org/cdn/jquery/1.10.2.min.js"></script>
+<script type="text/javascript" src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>
 <div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/></div>
 </body>
