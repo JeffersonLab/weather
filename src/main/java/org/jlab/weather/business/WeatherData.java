@@ -5,12 +5,22 @@ import javax.ejb.Singleton;
 @Singleton
 public class WeatherData {
     // Accuweather
-    private String hourlyForcastJSON = "{}";
+    private String hourlyAccuweatherForecastJSON = "{}";
     // Accuweather
     private String dailyForcastJSON = "{}";
 
+    private String hourlyNWSForecastJSON = "{}";
+
     // NWS
     private String hourlyForcastXML = "";
+
+    public String getHourlyNWSForecastJSON() {
+        return hourlyNWSForecastJSON;
+    }
+
+    public void setHourlyNWSForecastJSON(String hourlyNWSForecastJSON) {
+        this.hourlyNWSForecastJSON = hourlyNWSForecastJSON;
+    }
 
     // NWS
     private String dailyForcastXML = "";
@@ -21,12 +31,12 @@ public class WeatherData {
     // NWS
     private byte[] radarImage;
 
-    public String getHourlyForcastJSON() {
-        return hourlyForcastJSON;
+    public String getHourlyAccuweatherForecastJSON() {
+        return hourlyAccuweatherForecastJSON;
     }
 
-    public void setHourlyForcastJSON(String hourlyForcastJSON) {
-        this.hourlyForcastJSON = hourlyForcastJSON;
+    public void setHourlyAccuweatherForecastJSON(String hourlyAccuweatherForecastJSON) {
+        this.hourlyAccuweatherForecastJSON = hourlyAccuweatherForecastJSON;
     }
 
     public String getDailyForcastJSON() {

@@ -7,7 +7,7 @@ jlab.triCharWeekNames = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
 jlab.weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 jlab.loadHourlyWeather = function() {
     var request = jQuery.ajax({
-        url: "/weather/hourly-forecast.json",
+        url: "/weather/hourly-accuweather-forecast.json",
         type: "GET",
         dataType: "json"
     });
@@ -294,6 +294,310 @@ jlab.loadDailyWeather = function() {
     });
 };
 
+jlab.loadNWSHourlyWeatherJson = function() {
+    var request = jQuery.ajax({
+        url: "/weather/hourly-nws-forecast.json",
+        type: "GET",
+        dataType: "json"
+    });
+
+    request.done(function(data) {
+        var $tbody = $("#hourly-table tbody"),
+            hourlyData = data,
+            numHours = 8;
+        var row = '<tr><th></th>';
+        for(var i = 0; i < numHours; i++) {
+            var d = new Date(hourlyData[i].EpochDateTime * 1000),
+                qualifier = (d.getHours() < 12) ? 'am' : 'pm',
+                hour = d.getHours() % 12,
+                hour = hour ? hour : 12;
+            row = row + '<td>' + hour + qualifier + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td><img alt="' + hourlyData[i].IconPhrase + '" src="resources/img/weather-icons/' + hourlyData[i].WeatherIcon + '.png"/></td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>'
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].IconPhrase + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Temp (°F)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Temperature.Value + '°</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Feels Like</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].RealFeelTemperature.Value + '°</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Precipitation</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].PrecipitationProbability + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Wind (mph)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + Math.round(hourlyData[i].Wind.Speed.Value) + ' ' + hourlyData[i].Wind.Direction.English + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Wind Gusts (mph)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + Math.round(hourlyData[i].WindGust.Speed.Value) + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>UV Index</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].UVIndex + ' ' + hourlyData[i].UVIndexText +  '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row divider-row"><th></th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td></td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Dew Point (°F)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].DewPoint.Value + '°</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Relative Humidity</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].RelativeHumidity + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Wet Bulb Temp (°F)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].WetBulbTemperature.Value + '°</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Visibility (mi)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Visibility.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Cloud Cover</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].CloudCover + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Cloud Ceiling (ft)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Ceiling.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Rain (in)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Rain.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Snow (in)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Snow.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Ice (in)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].Ice.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Total Liquid (in)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].TotalLiquid.Value + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Rain Probability</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].RainProbability + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Snow Probability</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].SnowProbability + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Ice Probability</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].IceProbability + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+
+        /*for(var i = 0; i < numHours; i++) {
+            var d = new Date(hourlyData[i].EpochDateTime * 1000),
+                qualifier = (d.getHours() < 12) ? 'am' : 'pm',
+                hour = d.getHours() % 12,
+                hour = hour ? hour : 12;
+            var row = '<tr><td>' + hour + qualifier +
+                '</td><td>' + hourlyData[i].Temperature.Value +
+                ' °F</td><td>' + hourlyData[i].RealFeelTemperature.Value +
+                ' °F</td><td><img alt="' + hourlyData[i].IconPhrase + '" src="resources/img/weather-icons/' + hourlyData[i].WeatherIcon +
+                '.png"/></td><td>' + hourlyData[i].IconPhrase +
+                '</td><td>' + hourlyData[i].PrecipitationProbability +
+                '%</td><td>' + hourlyData[i].Wind.Speed.Value + ' mph ' + hourlyData[i].Wind.Direction.English + '</td></tr>';
+            $tbody.append(row);
+        }*/
+
+        var d = new Date(hourlyData[0].EpochDateTime * 1000);
+        var $heading = $("#hourly-table-heading");
+        $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
+
+
+        if (window.location.search.indexOf('merz=awesome') > -1) {
+            $("#detail-toggle").click();
+        }
+    });
+
+    request.fail(function(xhr, textStatus) {
+        window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+    });
+
+    request.always(function() {
+    });
+};
+
+jlab.loadNWSHourlyWeather = function() {
+    var request = jQuery.ajax({
+        url: "/weather/hourly-forecast.xml",
+        type: "GET",
+        dataType: "xml"
+    });
+
+    request.done(function(data) {
+        console.log(data);
+
+        let timeArray = new Array(),
+            iconArray = new Array(),
+            phraseArray = new Array(),
+            tempArray = new Array(),
+            precipArray = new Array();
+
+        let $xmlData = $(data).find("data"),
+            $parameters = $xmlData.find("parameters");
+
+        $xmlData.find("time-layout").find("start-valid-time").each(function() {
+            timeArray.push($(this).text());
+        });
+
+        $parameters.find("conditions-icon icon-link").each(function() {
+            iconArray.push($(this).text());
+        });
+
+        $parameters.find("weather weather-conditions").each(function() {
+            phraseArray.push($(this).attr("weather-summary"));
+        });
+
+        $parameters.find("temperature value").each(function() {
+            tempArray.push($(this).text());
+        });
+
+        var $tbody = $("#hourly-table tbody"),
+            numHours = 5;
+        var row = '<tr><th></th>';
+        for(var i = 0; i < numHours; i++) {
+            var d = new Date(timeArray[i]),
+                qualifier = (d.getHours() < 12) ? 'am' : 'pm',
+                hour = d.getHours() % 12,
+                hour = hour ? hour : 12;
+            row = row + '<td>' + hour + qualifier + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td><img alt="' + iconArray[i] + '" src="' + iconArray[i] + '"/></td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr><th></th>'
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + phraseArray[i] + '</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="info-row"><th>Temp (°F)</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + tempArray[i] + '°</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        row = '<tr class="detail-row"><th>Cloud Cover</th>';
+        for(var i = 0; i < numHours; i++) {
+            row = row + '<td>' + hourlyData[i].CloudCover + '%</td>';
+        }
+        row = row + '</tr>';
+        $tbody.append(row);
+
+        var d = new Date(timeArray[0]);
+        var $heading = $("#hourly-table-heading");
+        $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
+
+
+        if (window.location.search.indexOf('merz=awesome') > -1) {
+            $("#detail-toggle").click();
+        }
+    });
+
+    request.fail(function(xhr, textStatus) {
+        window.console && console.log('Unable to query weather server: Text Status: ' + textStatus + ', Ready State: ' + xhr.readyState + ', HTTP Status Code: ' + xhr.status);
+    });
+
+    request.always(function() {
+    });
+};
+
 jlab.loadNWSDailyWeather = function() {
     var request = jQuery.ajax({
         url: "/weather/daily-forecast.xml",
@@ -302,8 +606,6 @@ jlab.loadNWSDailyWeather = function() {
     });
 
     request.done(function(data) {
-        console.log(data);
-
         let timeArray = new Array(),
             iconArray = new Array(),
             phraseArray = new Array(),
@@ -443,7 +745,7 @@ $(document).on("click", "#detail-toggle", function() {
 });
 
 $(function() {
-    jlab.loadHourlyWeather();
+    jlab.loadNWSHourlyWeatherJson();
     jlab.loadNWSDailyWeather();
     jlab.loadAlerts();
 });

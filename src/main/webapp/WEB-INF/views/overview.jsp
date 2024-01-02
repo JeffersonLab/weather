@@ -15,7 +15,7 @@
     <h1>Newport News, VA Weather</h1>
     <div class="responsive-container">
         <div class="card large">
-            <h2 id="hourly-table-heading">8 Hour Forecast</h2>
+            <h2 id="hourly-table-heading">Hourly Forecast</h2>
             <table id="hourly-table">
                 <tbody>
                 </tbody>

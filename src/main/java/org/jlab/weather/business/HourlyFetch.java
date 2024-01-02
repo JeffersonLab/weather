@@ -71,7 +71,7 @@ public class HourlyFetch {
     }
 
     private void fetchData() {
-        fetchNWSHourlyForecast();
+        fetchNWSHourlyJSONForecast();
         fetchNWSDailyForecast();
         fetchNWSAlerts();
         fetchNWSRadar();
@@ -91,7 +91,7 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setHourlyForcastJSON(response.body());
+            data.setHourlyAccuweatherForecastJSON(response.body());
 
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -127,15 +127,46 @@ public class HourlyFetch {
         }
     }
 
-    private void fetchNWSHourlyForecast() {
+    private void fetchNWSHourlyJSONForecast() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://mobile.weather.gov/wtf/MapClick.php?rand=2939.909355260897&lat=37.08&lon=-76.48&FcstType=digitalJSON"))
+                    .timeout(Duration.of(10, SECONDS))
+                    .GET()
+                    .build();
+
+            HttpClient client = HttpClient.newHttpClient();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            data.setHourlyNWSForecastJSON(response.body());
+
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void fetchNWSHourlyXMLForecast() {
 
         // Newport News zip code 23606 maps to latitude="37.08" longitude="-76.51"
         // https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php?whichClient=NDFDgen&lat=37.08&lon=-76.51&product=time-series&begin=2024-01-02T15%3A00%3A00&end=2024-01-04T00%3A00%3A00&Unit=e&temp=temp&qpf=qpf&snow=snow&wspd=wspd&wdir=wdir&sky=sky&wx=wx&icons=icons&rh=rh&conhazo=conhazo&ptotsvrtstm=ptotsvrtstm&wwa=wwa&wgust=wgust
 
+        // Alternative URL for Next 48 hours (all data): https://forecast.weather.gov/MapClick.php?lat=37.0836&lon=-76.4807&FcstType=digitalDWML
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
         Date start = new Date();
-        Date end = new Date(); // TODO: Add 10 hours;
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(start);
+        cal.add(Calendar.DATE, 1);
+
+        Date end = cal.getTime();
 
         Map<String, List<String>> paramMap = new HashMap<>();
 
@@ -147,6 +178,13 @@ public class HourlyFetch {
         paramMap.put("end", Arrays.asList(formatter.format(end)));
         paramMap.put("Unit", Arrays.asList("e"));
         paramMap.put("temp", Arrays.asList("temp"));
+        paramMap.put("wx", Arrays.asList("wx")); // conditions (oddly empty)
+        paramMap.put("icons", Arrays.asList("icons")); // only every 3 hours!
+        //paramMap.put("pop12", Arrays.asList("pop12")); // precip probability (only works for 12 hour period)
+        paramMap.put("sky", Arrays.asList("sky")); // cloud cover percent
+        //paramMap.put("wspd", Arrays.asList("wspd")); // wind speed (sustained) knots
+        //paramMap.put("wdir", Arrays.asList("wdir")); // wind direction (degrees)
+
 
         String queryString = buildQueryString(paramMap, "UTF8");
 
