@@ -132,7 +132,7 @@ public class HourlyFetch {
         // Newport News zip code 23606 maps to latitude="37.08" longitude="-76.51"
         // https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php?whichClient=NDFDgen&lat=37.08&lon=-76.51&product=time-series&begin=2024-01-02T15%3A00%3A00&end=2024-01-04T00%3A00%3A00&Unit=e&temp=temp&qpf=qpf&snow=snow&wspd=wspd&wdir=wdir&sky=sky&wx=wx&icons=icons&rh=rh&conhazo=conhazo&ptotsvrtstm=ptotsvrtstm&wwa=wwa&wgust=wgust
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
         Date start = new Date();
         Date end = new Date(); // TODO: Add 10 hours;
