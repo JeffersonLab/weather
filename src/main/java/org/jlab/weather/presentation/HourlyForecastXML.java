@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  *
  * @author ryans
  */
-@WebServlet(name = "HourlyForecast", urlPatterns = {"/hourly-forecast.json"})
-public class HourlyForecast extends HttpServlet {
+@WebServlet(name = "HourlyForecastXML", urlPatterns = {"/hourly-forecast.xml"})
+public class HourlyForecastXML extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(HourlyForecast.class.getName());
+    private static final Logger logger = Logger.getLogger(HourlyForecastXML.class.getName());
 
     @EJB
     WeatherData data;
@@ -29,11 +29,11 @@ public class HourlyForecast extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        response.setContentType("application/json");
+        response.setContentType("text/xml");
 
         OutputStream out = response.getOutputStream();
 
-        out.write(data.getHourlyForcastJSON().getBytes(StandardCharsets.UTF_8));
+        out.write(data.getHourlyForcastXML().getBytes(StandardCharsets.UTF_8));
 
         out.flush();
     }

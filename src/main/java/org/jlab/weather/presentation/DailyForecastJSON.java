@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  *
  * @author ryans
  */
-@WebServlet(name = "DailyForecast", urlPatterns = {"/daily-forecast.json"})
-public class DailyForecast extends HttpServlet {
+@WebServlet(name = "DailyForecastJSON", urlPatterns = {"/daily-forecast.json"})
+public class DailyForecastJSON extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(DailyForecast.class.getName());
+    private static final Logger logger = Logger.getLogger(DailyForecastJSON.class.getName());
 
     @EJB
     WeatherData data;
