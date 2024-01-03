@@ -122,10 +122,10 @@ public class HourlyFetch {
                 }
             }
 
-            data.setHourlyAccuweatherForecastJSON(json);
+            data.setHourlyAccuweatherForecast(json);
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            data.setHourlyAccuweatherForecastJSON("{}");
+            data.setHourlyAccuweatherForecast("{}");
             System.err.println("Unable to fetch AccuWeather Hourly Forecast; clearing old data");
         }
     }
@@ -159,10 +159,10 @@ public class HourlyFetch {
                 }
             }
 
-            data.setDailyForcastJSON(json);
+            data.setDailyAccuweatherForecast(json);
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            data.setDailyForcastJSON("{}");
+            data.setDailyAccuweatherForecast("{}");
             System.err.println("Unable to fetch AccuWeather Daily Forecast; clearing old data");
         }
     }
@@ -179,10 +179,10 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setHourlyNWSForecastJSON(response.body());
+            data.setHourlyNWSForecast(response.body());
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            data.setHourlyNWSForecastJSON("{}");
+            data.setHourlyNWSForecast("{}");
             System.err.println("Unable to fetch NWS Hourly Forecast; clearing old data");
         }
     }
@@ -238,7 +238,7 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setHourlyForcastXML(response.body());
+            data.setHourlyNWSForecastXML(response.body());
 
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -282,10 +282,10 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setDailyForcastXML(response.body());
+            data.setDailyNWSForecast(response.body());
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
-            data.setDailyForcastXML("");
+            data.setDailyNWSForecast("");
             System.err.println("Unable to fetch NWS Daily Forecast; clearing old data");
         }
     }

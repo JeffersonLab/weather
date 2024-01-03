@@ -212,13 +212,13 @@ jlab.loadAccuweatherHourlyWeather = function() {
 
 jlab.loadAccuweatherDailyWeather = function() {
     var request = jQuery.ajax({
-        url: "/weather/daily-forecast.json",
+        url: "/weather/daily-accuweather-forecast.json",
         type: "GET",
         dataType: "json"
     });
 
     request.done(function(data) {
-        if(Array.isArray(data.dailyForecasts) && data.DailyForecasts.length > 0 && data.DailyForecasts[0].hasOwnProperty("EpochDate")) {
+        if(Array.isArray(data.DailyForecasts) && data.DailyForecasts.length > 0 && data.DailyForecasts[0].hasOwnProperty("EpochDate")) {
             // good to go.
         } else {
             console.log("Accuweather daily response does not include a DailyForecasts array with positive length with first object containing EpochData");
@@ -531,7 +531,7 @@ jlab.loadNWSHourlyWeatherXml = function() {
 
 jlab.loadNWSDailyWeather = function() {
     var request = jQuery.ajax({
-        url: "/weather/daily-forecast.xml",
+        url: "/weather/daily-nws-forecast.xml",
         type: "GET",
         dataType: "xml"
     });
