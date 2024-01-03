@@ -22,8 +22,24 @@ This application requires a Java 11+ JVM and standard library to run, plus a Jav
 
 ## Configure
 
+### Configtime
+Wildfly must be pre-configured before the first deployment of the app. The [wildfly bash scripts](https://github.com/JeffersonLab/wildfly#configure) can be used to accomplish this.  Specifically the tuckey url rewrite lib needs to be installed in Wildfly.  Example:
+
+```
+./server-setup.sh server.env config_provided
+```
+where server.env is of the form:
+```
+WILDFLY_APP_HOME=/opt/jboss/wildfly
+WILDFLY_RUN_USER=jboss
+WILDFLY_PASS=admin
+WILDFLY_USER=admin
+ADD_JBOSS_MODULES='global|org.tuckey.urlrewritefilter|https://repo1.maven.org/maven2/org/tuckey/urlrewritefilter/4.0.4/urlrewritefilter-4.0.4.jar|javaee.api,org.jboss.as.web'
+```
+Alternatively recompile the app with the tuckey lib already bundled in the war by replacing `providedCompile` with `implementation` in the Gradle build [here](https://github.com/JeffersonLab/weather/blob/7e69ca9c14fc693503ca273a47d3435537da6186/build.gradle#L21).
+
 ### Runtime
-Set the environment variable `ACCUWEATHER_API_KEY`.  See: https://developer.accuweather.com
+Optionally set the environment variable `ACCUWEATHER_API_KEY`.  See: https://developer.accuweather.com.  If unset or if the accuweather request fails then forecast data falls back to NWS data.  If AccuWeather data is available, but you'd like to see NWS forecast data append URL parameter `forceNWS` to the app url.
 
 ## Build
 This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
