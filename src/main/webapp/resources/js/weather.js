@@ -679,7 +679,15 @@ $(document).on("click", "#detail-toggle", function() {
 });
 
 $(function() {
-    if (accuWeatherForecasts) {
+    let forceNWS = false;
+
+    let url = new URL(window.location.href);
+
+    if (url.searchParams.has('forceNWS')) {
+        forceNWS = true;
+    }
+
+    if (!forceNWS && accuWeatherForecasts) {
         jlab.loadAccuweatherHourlyWeather();
         jlab.loadAccuweatherDailyWeather();
     } else { // use NWS Forecasts
