@@ -4,7 +4,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.ejb.Timer;
+import javax.json.Json;
+import javax.json.stream.JsonParser;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -91,7 +94,22 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setHourlyAccuweatherForecastJSON(response.body());
+            String json = response.body();
+
+            JsonParser parser = Json.createParser(new StringReader(json));
+            while(parser.hasNext()) {
+                JsonParser.Event event = parser.next();
+                if (event == JsonParser.Event.KEY_NAME) {
+                    String key = parser.getString();
+                    if("Reference".equals(key)) {
+                        System.err.println("Accuweather hourly weather response contains error with reference to API key; clearing");
+                        json = "";
+                        break;
+                    }
+                }
+            }
+
+            data.setHourlyAccuweatherForecastJSON(json);
 
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -116,7 +134,22 @@ public class HourlyFetch {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            data.setDailyForcastJSON(response.body());
+            String json = response.body();
+
+            JsonParser parser = Json.createParser(new StringReader(json));
+            while(parser.hasNext()) {
+                JsonParser.Event event = parser.next();
+                if (event == JsonParser.Event.KEY_NAME) {
+                    String key = parser.getString();
+                    if("Reference".equals(key)) {
+                        System.err.println("Accuweather daily weather response contains error with reference to API key; clearing");
+                        json = "";
+                        break;
+                    }
+                }
+            }
+
+            data.setDailyForcastJSON(json);
 
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
