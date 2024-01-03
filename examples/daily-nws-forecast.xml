@@ -1,0 +1,123 @@
+
+<?xml version="1.0"?>
+<dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+    <head>
+        <product srsName="WGS 1984" concise-name="dwmlByDay" operational-mode="official">
+            <title>NOAA's National Weather Service Forecast by 24 Hour Period</title>
+            <field>meteorological</field>
+            <category>forecast</category>
+            <creation-date refresh-frequency="PT1H">2024-01-03T19:00:00Z</creation-date>
+        </product>
+        <source>
+            <more-information>https://graphical.weather.gov/xml/</more-information>
+            <production-center>Meteorological Development Laboratory<sub-center>Product Generation Branch</sub-center></production-center>
+            <disclaimer>http://www.nws.noaa.gov/disclaimer.html</disclaimer>
+            <credit>https://www.weather.gov/</credit>
+            <credit-logo>https://www.weather.gov/logorequest</credit-logo>
+            <feedback>https://www.weather.gov/contact</feedback>
+        </source>
+    </head>
+    <data>
+        <location>
+            <location-key>point1</location-key>
+            <point latitude="37.08" longitude="-76.51"/>
+        </location>
+        <moreWeatherInformation applicable-location="point1">https://forecast-v3.weather.gov/point/37.08,-76.51</moreWeatherInformation>
+        <time-layout time-coordinate="local" summarization="24hourly">
+            <layout-key>k-p24h-n5-1</layout-key>
+            <start-valid-time>2024-01-03T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-04T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-04T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-05T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-05T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-06T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-06T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-07T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-07T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-08T06:00:00-05:00</end-valid-time>
+        </time-layout>
+        <time-layout time-coordinate="local" summarization="12hourly">
+            <layout-key>k-p12h-n10-2</layout-key>
+            <start-valid-time>2024-01-03T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-03T18:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-03T18:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-04T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-04T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-04T18:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-04T18:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-05T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-05T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-05T18:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-05T18:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-06T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-06T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-06T18:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-06T18:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-07T06:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-07T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-07T18:00:00-05:00</end-valid-time>
+            <start-valid-time>2024-01-07T18:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-08T06:00:00-05:00</end-valid-time>
+        </time-layout>
+        <time-layout time-coordinate="local" summarization="24hourly">
+            <layout-key>k-p5d-n1-3</layout-key>
+            <start-valid-time>2024-01-03T06:00:00-05:00</start-valid-time>
+            <end-valid-time>2024-01-08T06:00:00-05:00</end-valid-time>
+        </time-layout>
+        <parameters applicable-location="point1">
+            <temperature type="maximum" units="Fahrenheit" time-layout="k-p24h-n5-1">
+                <name>Daily Maximum Temperature</name>
+                <value>49</value>
+                <value>47</value>
+                <value>43</value>
+                <value>53</value>
+                <value>50</value>
+            </temperature>
+            <temperature type="minimum" units="Fahrenheit" time-layout="k-p24h-n5-1">
+                <name>Daily Minimum Temperature</name>
+                <value>39</value>
+                <value>27</value>
+                <value>30</value>
+                <value>37</value>
+                <value>32</value>
+            </temperature>
+            <probability-of-precipitation type="12 hour" units="percent" time-layout="k-p12h-n10-2">
+                <name>12 Hourly Probability of Precipitation</name>
+                <value>0</value>
+                <value>35</value>
+                <value>5</value>
+                <value>0</value>
+                <value>0</value>
+                <value>7</value>
+                <value>99</value>
+                <value>45</value>
+                <value>5</value>
+                <value>6</value>
+            </probability-of-precipitation>
+            <weather time-layout="k-p24h-n5-1">
+                <name>Weather Type, Coverage, and Intensity</name>
+                <weather-conditions weather-summary="Chance Rain Showers">
+                    <value coverage="chance" intensity="light" weather-type="rain showers" qualifier="none"/>
+                </weather-conditions>
+                <weather-conditions weather-summary="Mostly Sunny"/>
+                <weather-conditions weather-summary="Partly Sunny"/>
+                <weather-conditions weather-summary="Rain">
+                    <value coverage="definitely" intensity="moderate" weather-type="rain" qualifier="none"/>
+                </weather-conditions>
+                <weather-conditions weather-summary="Partly Sunny"/>
+            </weather>
+            <conditions-icon type="forecast-NWS" time-layout="k-p24h-n5-1">
+                <name>Conditions Icons</name>
+                <icon-link>http://forecast.weather.gov/images/wtf/hi_shwrs40.jpg</icon-link>
+                <icon-link>http://forecast.weather.gov/images/wtf/few.jpg</icon-link>
+                <icon-link>http://forecast.weather.gov/images/wtf/sct.jpg</icon-link>
+                <icon-link>http://forecast.weather.gov/images/wtf/ra100.jpg</icon-link>
+                <icon-link>http://forecast.weather.gov/images/wtf/sct.jpg</icon-link>
+            </conditions-icon>
+            <hazards time-layout="k-p5d-n1-3">
+                <name>Watches, Warnings, and Advisories</name>
+                <hazard-conditions xsi:nil="true"/>
+            </hazards>
+        </parameters>
+    </data>
+</dwml>
