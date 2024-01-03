@@ -306,12 +306,49 @@ jlab.loadNWSHourlyWeather = function() {
     });
 
     request.done(function(data) {
+
+        if(typeof data.PeriodNameList == 'object') {
+            // good to go.
+        } else {
+            console.log("NWS hourly response does not include a PeriodNameList object");
+            return;
+        }
+
         var $tbody = $("#hourly-table tbody"),
-            hourlyData = data,
+            hourlyData = {
+            "unixtime":[],
+            "windSpeed":[],
+            "cloudAmount":[],
+            "pop":[],
+            "relativeHumidity":[],
+            "windGust":[],
+            "temperature":[],
+            "windDirectionCardinal":[],
+            "iconLink":[],
+            "weather":[]
+            },
             numHours = 8;
         var row = '<tr><th></th>';
+
+        let periodArray = Object.values(data.PeriodNameList);
+
+        for(var i = 0; i < periodArray.length; i++) {
+            let period = periodArray[i];
+
+            hourlyData.unixtime = hourlyData.unixtime.concat(data[period].unixtime);
+            hourlyData.windSpeed = hourlyData.windSpeed.concat(data[period].windSpeed);
+            hourlyData.cloudAmount = hourlyData.cloudAmount.concat(data[period].cloudAmount);
+            hourlyData.pop = hourlyData.pop.concat(data[period].pop);
+            hourlyData.relativeHumidity = hourlyData.relativeHumidity.concat(data[period].relativeHumidity);
+            hourlyData.windGust = hourlyData.windGust.concat(data[period].windGust);
+            hourlyData.temperature = hourlyData.temperature.concat(data[period].temperature);
+            hourlyData.windDirectionCardinal = hourlyData.windDirectionCardinal.concat(data[period].windDirectionCardinal);
+            hourlyData.iconLink = hourlyData.iconLink.concat(data[period].iconLink);
+            hourlyData.weather = hourlyData.weather.concat(data[period].weather);
+        }
+
         for (var i = 0; i < numHours; i++) {
-            var d = new Date(hourlyData[i].EpochDateTime * 1000),
+            var d = new Date(hourlyData.unixtime[i] * 1000),
                 qualifier = (d.getHours() < 12) ? 'am' : 'pm',
                 hour = d.getHours() % 12,
                 hour = hour ? hour : 12;
@@ -322,56 +359,35 @@ jlab.loadNWSHourlyWeather = function() {
 
         row = '<tr><th></th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td><img alt="' + hourlyData[i].IconPhrase + '" src="resources/img/weather-icons/' + hourlyData[i].WeatherIcon + '.png"/></td>';
+            row = row + '<td><img alt="' + hourlyData.weather[i] + '" src="//forecast.weather.gov/images/wtf/small/' + hourlyData.iconLink[i] + '"/></td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
         row = '<tr><th></th>'
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].IconPhrase + '</td>';
+            row = row + '<td>' + hourlyData.weather[i] + '</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
         row = '<tr class="info-row"><th>Temp (°F)</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Temperature.Value + '°</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="info-row"><th>Feels Like</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].RealFeelTemperature.Value + '°</td>';
+            row = row + '<td>' + hourlyData.temperature[i] + '°</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
         row = '<tr class="info-row"><th>Precipitation</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].PrecipitationProbability + '%</td>';
+            row = row + '<td>' + hourlyData.pop[i] + '%</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
         row = '<tr class="info-row"><th>Wind (mph)</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + Math.round(hourlyData[i].Wind.Speed.Value) + ' ' + hourlyData[i].Wind.Direction.English + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="info-row"><th>Wind Gusts (mph)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + Math.round(hourlyData[i].WindGust.Speed.Value) + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="info-row"><th>UV Index</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].UVIndex + ' ' + hourlyData[i].UVIndexText + '</td>';
+            row = row + '<td>' + Math.round(hourlyData.windSpeed[i]) + ' ' + hourlyData.windDirectionCardinal[i] + '</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
@@ -383,103 +399,26 @@ jlab.loadNWSHourlyWeather = function() {
         row = row + '</tr>';
         $tbody.append(row);
 
-        row = '<tr class="detail-row"><th>Dew Point (°F)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].DewPoint.Value + '°</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
         row = '<tr class="detail-row"><th>Relative Humidity</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].RelativeHumidity + '%</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Wet Bulb Temp (°F)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].WetBulbTemperature.Value + '°</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Visibility (mi)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Visibility.Value + '</td>';
+            row = row + '<td>' + hourlyData.relativeHumidity[i] + '%</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
         row = '<tr class="detail-row"><th>Cloud Cover</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].CloudCover + '%</td>';
+            row = row + '<td>' + hourlyData.cloudAmount[i] + '%</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
 
-        row = '<tr class="detail-row"><th>Cloud Ceiling (ft)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Ceiling.Value + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Rain (in)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Rain.Value + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Snow (in)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Snow.Value + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Ice (in)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].Ice.Value + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Total Liquid (in)</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].TotalLiquid.Value + '</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Rain Probability</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].RainProbability + '%</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Snow Probability</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].SnowProbability + '%</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        row = '<tr class="detail-row"><th>Ice Probability</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].IceProbability + '%</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        var d = new Date(hourlyData[0].EpochDateTime * 1000);
+        var d = new Date(hourlyData.unixtime[0] * 1000);
         var $heading = $("#hourly-table-heading");
         $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
 
         var $linkDiv = $("#hourly-table-link");
-        $linkDiv.html('<a href="https://www.weather.gov/akq/">Provided by NWS</a>');
+        $linkDiv.html('<a id="detail-toggle" href="#">Show Details</a> | <a href="https://www.weather.gov/akq/">Provided by NWS</a>');
 
         if (window.location.search.indexOf('merz=awesome') > -1) {
             $("#detail-toggle").click();
