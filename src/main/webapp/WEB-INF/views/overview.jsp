@@ -46,7 +46,7 @@
     </div>
 </div>
 <script>
-    let accuWeatherForecasts = false;
+    let accuWeatherForecasts = ${accuWeatherForecasts};
 </script>
 <script type="text/javascript" src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>

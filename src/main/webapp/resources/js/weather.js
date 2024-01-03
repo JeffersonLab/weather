@@ -21,6 +21,7 @@ jlab.loadAccuweatherHourlyWeather = function() {
             // good to go.
         } else {
             console.log("Accuweather hourly response is not an array with positive length with first object containing EpochDataTime");
+            jlab.loadNWSHourlyWeather();
             return;
         }
 
@@ -221,6 +222,7 @@ jlab.loadAccuweatherDailyWeather = function() {
             // good to go.
         } else {
             console.log("Accuweather daily response does not include a DailyForecasts array with positive length with first object containing EpochData");
+            jlab.loadNWSDailyWeather();
             return;
         }
 

@@ -74,7 +74,20 @@ public class HourlyFetch {
     }
 
     private void fetchData() {
-        fetchNWSHourlyJSONForecast();
+
+        boolean accuWeatherForecasts = false;
+        String apiKey = System.getenv("ACCUWEATHER_API_KEY");
+
+        if(apiKey != null && !apiKey.isBlank()) {
+            accuWeatherForecasts = true;
+        }
+
+        if(accuWeatherForecasts) {
+            fetchAccuweatherHourlyForecast();
+            fetchAccuweatherDailyForecast();
+        }
+
+        fetchNWSHourlyForecast();
         fetchNWSDailyForecast();
         fetchNWSAlerts();
         fetchNWSRadar();
@@ -111,12 +124,9 @@ public class HourlyFetch {
 
             data.setHourlyAccuweatherForecastJSON(json);
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            data.setHourlyAccuweatherForecastJSON("{}");
+            System.err.println("Unable to fetch AccuWeather Hourly Forecast; clearing old data");
         }
     }
 
@@ -151,16 +161,13 @@ public class HourlyFetch {
 
             data.setDailyForcastJSON(json);
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            data.setDailyForcastJSON("{}");
+            System.err.println("Unable to fetch AccuWeather Daily Forecast; clearing old data");
         }
     }
 
-    private void fetchNWSHourlyJSONForecast() {
+    private void fetchNWSHourlyForecast() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI("https://mobile.weather.gov/wtf/MapClick.php?rand=2939.909355260897&lat=37.08&lon=-76.48&FcstType=digitalJSON"))
@@ -174,12 +181,9 @@ public class HourlyFetch {
 
             data.setHourlyNWSForecastJSON(response.body());
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            data.setHourlyNWSForecastJSON("{}");
+            System.err.println("Unable to fetch NWS Hourly Forecast; clearing old data");
         }
     }
 
@@ -280,12 +284,9 @@ public class HourlyFetch {
 
             data.setDailyForcastXML(response.body());
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            data.setDailyForcastXML("");
+            System.err.println("Unable to fetch NWS Daily Forecast; clearing old data");
         }
     }
 
@@ -303,12 +304,9 @@ public class HourlyFetch {
 
             data.setAlertJSON(response.body());
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException |InterruptedException e) {
+            data.setAlertJSON("{}");
+            System.err.println("Unable to fetch NWS Alerts; clearing old data");
         }
     }
 
@@ -326,12 +324,9 @@ public class HourlyFetch {
 
             data.setRadarImage(response.body());
 
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            data.setRadarImage(new byte[0]);
+            System.err.println("Unable to fetch NWS Radar; clearing old data");
         }
     }
 

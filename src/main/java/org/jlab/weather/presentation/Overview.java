@@ -26,6 +26,17 @@ public class Overview extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        boolean accuWeatherForecasts = false;
+
+        String apiKey = System.getenv("ACCUWEATHER_API_KEY");
+
+        if(apiKey != null && !apiKey.isBlank()) {
+            accuWeatherForecasts = true;
+        }
+
+        request.setAttribute("accuWeatherForecasts", accuWeatherForecasts);
+
         request.getRequestDispatcher("/WEB-INF/views/overview.jsp").forward(request, response);
     }
 }
