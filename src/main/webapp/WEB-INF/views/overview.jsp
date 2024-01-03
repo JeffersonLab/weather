@@ -20,9 +20,7 @@
                 <tbody>
                 </tbody>
             </table>
-            <div class="link-div"><a id="detail-toggle" href="#">Show Details</a> | <a id="provided-by-link"
-                                                                                    href="https://www.accuweather.com/en/us/newport-news-va/23606/hourly-weather-forecast/336210">Provided
-                by AccuWeather</a></div>
+            <div class="link-div" id="hourly-table-link"></div>
             <div id="detail-wrap">
             </div>
         </div>
@@ -38,9 +36,7 @@
                 <tbody>
                 </tbody>
             </table>
-            <div class="link-div">
-            <a href="https://www.weather.gov/akq/">Provided
-                by NWS</a>
+            <div class="link-div" id="daily-table-link">
             </div>
     </div>
         <div class="card">
@@ -49,6 +45,9 @@
         </div>
     </div>
 </div>
+<script>
+    let accuWeatherForecasts = false;
+</script>
 <script type="text/javascript" src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>
 <div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/>, <a href="https://github.com/JeffersonLab/weather">Home</a></div>
