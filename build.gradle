@@ -3,7 +3,7 @@ plugins {
 }
 description = 'JLab weather app'
 group 'org.jlab'
-version '2.1.0'
+version '2.2.0'
 ext.releaseDate = 'Jan 3 2024'
 tasks.withType(JavaCompile) {
     options.release = 11
