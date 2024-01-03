@@ -5,7 +5,7 @@ jlab.monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 jlab.triCharWeekNames = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"];
 jlab.weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-jlab.loadHourlyWeather = function() {
+jlab.loadAccuweatherHourlyWeather = function() {
     var request = jQuery.ajax({
         url: "/weather/hourly-accuweather-forecast.json",
         type: "GET",
@@ -16,6 +16,14 @@ jlab.loadHourlyWeather = function() {
         var $tbody = $("#hourly-table tbody"),
         hourlyData = data,
         numHours = 8;
+
+        if(Array.isArray(hourlyData) && hourlyData.length > 0 && hourlyData[0].hasOwnProperty("EpochDateTime")) {
+            // good to go.
+        } else {
+            console.log("Accuweather hourly response is not an array with positive length with first object containing EpochDataTime");
+            return;
+        }
+
         var row = '<tr><th></th>';
         for(var i = 0; i < numHours; i++) {
                 var d = new Date(hourlyData[i].EpochDateTime * 1000),
@@ -181,22 +189,6 @@ jlab.loadHourlyWeather = function() {
         row = row + '</tr>';
         $tbody.append(row);
 
-
-        /*for(var i = 0; i < numHours; i++) {
-            var d = new Date(hourlyData[i].EpochDateTime * 1000),
-                qualifier = (d.getHours() < 12) ? 'am' : 'pm',
-                hour = d.getHours() % 12,
-                hour = hour ? hour : 12;
-            var row = '<tr><td>' + hour + qualifier +
-                '</td><td>' + hourlyData[i].Temperature.Value +
-                ' °F</td><td>' + hourlyData[i].RealFeelTemperature.Value +
-                ' °F</td><td><img alt="' + hourlyData[i].IconPhrase + '" src="resources/img/weather-icons/' + hourlyData[i].WeatherIcon +
-                '.png"/></td><td>' + hourlyData[i].IconPhrase +
-                '</td><td>' + hourlyData[i].PrecipitationProbability +
-                '%</td><td>' + hourlyData[i].Wind.Speed.Value + ' mph ' + hourlyData[i].Wind.Direction.English + '</td></tr>';
-            $tbody.append(row);
-        }*/
-
         var d = new Date(hourlyData[0].EpochDateTime * 1000);
         var $heading = $("#hourly-table-heading");
         $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
@@ -215,7 +207,7 @@ jlab.loadHourlyWeather = function() {
     });
 };
 
-jlab.loadDailyWeather = function() {
+jlab.loadAccuweatherDailyWeather = function() {
     var request = jQuery.ajax({
         url: "/weather/daily-forecast.json",
         type: "GET",
@@ -223,6 +215,13 @@ jlab.loadDailyWeather = function() {
     });
 
     request.done(function(data) {
+        if(Array.isArray(data.dailyForecasts) && data.DailyForecasts.length > 0 && data.DailyForecasts[0].hasOwnProperty("EpochDate")) {
+            // good to go.
+        } else {
+            console.log("Accuweather daily response does not include a DailyForecasts array with positive length with first object containing EpochData");
+            return;
+        }
+
         var $tbody = $("#daily-table tbody"),
             dailyData = data.DailyForecasts,
             numDays = 5;
@@ -745,7 +744,10 @@ $(document).on("click", "#detail-toggle", function() {
 });
 
 $(function() {
-    jlab.loadNWSHourlyWeatherJson();
+    jlab.loadAccuweatherHourlyWeather();
+    //jlab.loadAccuweatherDailyWeather();
+
+    //jlab.loadNWSHourlyWeatherJson();
     jlab.loadNWSDailyWeather();
     jlab.loadAlerts();
 });

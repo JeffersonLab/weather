@@ -103,7 +103,7 @@ public class HourlyFetch {
                     String key = parser.getString();
                     if("Reference".equals(key)) {
                         System.err.println("Accuweather hourly weather response contains error with reference to API key; clearing");
-                        json = "";
+                        json = "{}";
                         break;
                     }
                 }
@@ -143,7 +143,7 @@ public class HourlyFetch {
                     String key = parser.getString();
                     if("Reference".equals(key)) {
                         System.err.println("Accuweather daily weather response contains error with reference to API key; clearing");
-                        json = "";
+                        json = "{}";
                         break;
                     }
                 }
