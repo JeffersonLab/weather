@@ -6,7 +6,7 @@
     <title>Weather</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/weather.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/css/weather.css"/>
 </head>
 <body>
 <ul class="ticker">
@@ -48,8 +48,8 @@
 <script>
     let accuWeatherForecasts = ${accuWeatherForecasts};
 </script>
-<script type="text/javascript" src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>
+<script src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/weather.js"></script>
 <div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/>, <a href="https://github.com/JeffersonLab/weather">Home</a></div>
 </body>
 </html>

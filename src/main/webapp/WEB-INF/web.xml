@@ -22,6 +22,16 @@
         <param-name>releaseDate</param-name>
         <param-value>@RELEASE_DATE@</param-value>
     </context-param>
+    <filter>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UrlRewriteFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
     <session-config>
         <session-timeout>480</session-timeout>
         <cookie-config>

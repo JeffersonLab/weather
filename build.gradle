@@ -16,6 +16,9 @@ repositories {
 dependencies {
     // Wildfly 26.1.3.Final provides:
     providedCompile 'javax:javaee-api:8.0.1'
+
+    // Smoothness setup should install these into Wildfly
+    providedCompile 'org.tuckey:urlrewritefilter:4.0.4'
 }
 war {
     archiveFileName = 'weather.war'
