@@ -553,7 +553,11 @@ jlab.loadNWSDailyWeather = function() {
         });
 
         $parameters.find("conditions-icon icon-link").each(function() {
-            iconArray.push($(this).text());
+
+            let httpUrl = $(this).text(),
+                protocolRelativeUrl = httpUrl.replace("http:", "");
+
+            iconArray.push(protocolRelativeUrl);
         });
 
         $parameters.find("weather weather-conditions").each(function() {
