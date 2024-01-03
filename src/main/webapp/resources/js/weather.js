@@ -702,5 +702,37 @@ $(function() {
     jlab.loadAlerts();
 });
 
+getMillisecondsToNextHour = function() {
+    let now = new Date(),
+        nowMilli = now.getMilliseconds(),
+        nowSeconds = now.getSeconds(),
+        nowMinutes = now.getMinutes(),
+        milliToNextHour = 3600000 - (nowMilli + (nowSeconds * 1000) + (nowMinutes * 60000));
+
+    return milliToNextHour;
+};
+
+getRefreshTimeout = function() {
+    let timeout = getMillisecondsToNextHour();
+
+    timeout = timeout + 60000; // We wait one minute after hour
+
+    return timeout;
+};
+
+refreshOnTheHour = function() {
+    handleRefreshEvent();
+
+    let timeout = getRefreshTimeout();
+
+    setTimeout("refreshOnTheHour()", timeout);
+};
+
+handleRefreshEvent = function() {
+    window.location.reload();
+};
+
+let timeout = getRefreshTimeout();
+setTimeout("refreshOnTheHour()", timeout);
 
 
