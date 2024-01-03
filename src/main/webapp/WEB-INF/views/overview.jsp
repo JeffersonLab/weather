@@ -51,6 +51,6 @@
 </div>
 <script type="text/javascript" src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/weather.js"></script>
-<div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/></div>
+<div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/>, <a href="https://github.com/JeffersonLab/weather">Home</a></div>
 </body>
 </html>

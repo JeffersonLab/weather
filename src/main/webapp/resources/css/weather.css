@@ -42,10 +42,6 @@ h2,
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.min-temp {
-    font-size: 0.8em;
-    color: darkgrey;
-}
 .divider-row {
     background-color: darkgray;
 }

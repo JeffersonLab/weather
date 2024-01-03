@@ -36,7 +36,7 @@ jlab.loadHourlyWeather = function() {
 
         row = '<tr><th></th>'
         for(var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData[i].IconPhrase + '</td>';
+            row = row + '<td title="' + hourlyData[i].IconPhrase + '">' + hourlyData[i].IconPhrase + '</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
@@ -48,7 +48,7 @@ jlab.loadHourlyWeather = function() {
         row = row + '</tr>';
         $tbody.append(row);
 
-        row = '<tr class="info-row"><th>Feels Like</th>';
+        row = '<tr class="info-row"><th>Feels Like (°F)</th>';
         for(var i = 0; i < numHours; i++) {
             row = row + '<td>' + hourlyData[i].RealFeelTemperature.Value + '°</td>';
         }
@@ -252,7 +252,7 @@ jlab.loadDailyWeather = function() {
 
         row = '<tr class="info-row"><th>Temp (°F)</th>';
         for(var i = 0; i < numDays; i++) {
-            row = row + '<td>' + dailyData[i].Temperature.Maximum.Value + '° / <span class="min-temp">' +  dailyData[i].Temperature.Minimum.Value + '°</span></td>';
+            row = row + '<td>' + dailyData[i].Temperature.Minimum.Value + '° - ' +  dailyData[i].Temperature.Maximum.Value + '°</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
@@ -671,7 +671,7 @@ jlab.loadNWSDailyWeather = function() {
 
         row = '<tr class="info-row"><th>Temp (°F)</th>';
         for(var i = 0; i < numDays; i++) {
-            row = row + '<td>' + maxTempArray[i] + '° / <span class="min-temp">' +  minTempArray[i] + '°</span></td>';
+            row = row + '<td>' + minTempArray[i] + '° - ' +  maxTempArray[i] + '°</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
