@@ -1,4 +1,4 @@
-# weather [![CI](https://github.com/JeffersonLab/weather/actions/workflows/ci.yml/badge.svg)](https://github.com/JeffersonLab/weather/actions/workflows/ci.yml)
+# weather [![CI](https://github.com/JeffersonLab/weather/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/weather/actions/workflows/ci.yaml)
 A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for displaying Jefferson Lab weather for use in [Presenter](https://github.com/JeffersonLab/presenter).
 
 ![Screenshot](https://github.com/JeffersonLab/weather/raw/main/Screenshot.png?raw=true "Screenshot")
