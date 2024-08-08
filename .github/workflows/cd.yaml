@@ -9,5 +9,5 @@ jobs:
   release:
     uses: jeffersonlab/java-workflows/.github/workflows/gh-release.yaml@v2
     with:
-      files: build/libs/dtm.war
+      files: build/libs/weather.war
     secrets: inherit
