@@ -1,41 +1,39 @@
 package org.jlab.weather.presentation;
 
-import org.jlab.weather.business.WeatherData;
-
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Logger;
+import org.jlab.weather.business.WeatherData;
 
 /**
- *
  * @author ryans
  */
-@WebServlet(name = "Alerts", urlPatterns = {"/alerts.json"})
+@WebServlet(
+    name = "Alerts",
+    urlPatterns = {"/alerts.json"})
 public class Alerts extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(Alerts.class.getName());
+  private static final Logger logger = Logger.getLogger(Alerts.class.getName());
 
-    @EJB
-    WeatherData data;
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        response.setContentType("application/json");
+  @EJB WeatherData data;
 
-        OutputStream out = response.getOutputStream();
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
 
-        out.write(data.getAlertJSON().getBytes(StandardCharsets.UTF_8));
+    response.setContentType("application/json");
 
-        out.flush();
-    }
+    OutputStream out = response.getOutputStream();
 
+    out.write(data.getAlertJSON().getBytes(StandardCharsets.UTF_8));
+
+    out.flush();
+  }
 }
