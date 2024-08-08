@@ -647,7 +647,13 @@ jlab.loadAlerts = function() {
         /*console.log(data);*/
         var alertText = '';
         for(var i = 0; i < data.features.length; i++) {
-            alertText = alertText + 'NWS Alert: ' + data.features[i].properties.parameters.NWSheadline + '... ';
+            var headline = data.features[i].properties.parameters.NWSheadline;
+
+            if(headline === undefined) {
+                headline = data.features[i].properties.headline;
+            }
+
+            alertText = alertText + 'NWS Alert: ' + headline + '... ';
         }
         var alert = '<div class="alert"">' + alertText + '</div>';
 
