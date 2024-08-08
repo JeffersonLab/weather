@@ -21,8 +21,6 @@
                 </tbody>
             </table>
             <div class="link-div" id="hourly-table-link"></div>
-            <div id="detail-wrap">
-            </div>
         </div>
         <div id="radar-card" class="card medium">
             <h2>Wakefield Radar</h2>
@@ -42,6 +40,7 @@
         <div class="card">
             <h2>NWS Alerts</h2>
             <ul id="ticker-detail"><li>None</li></ul>
+            <div class="link-div" id="alert-table-link"></div>
         </div>
     </div>
 </div>

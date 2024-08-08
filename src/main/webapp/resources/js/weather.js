@@ -195,10 +195,10 @@ jlab.loadAccuweatherHourlyWeather = function() {
         $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
 
         var $linkDiv = $("#hourly-table-link");
-        $linkDiv.html('<a id="detail-toggle" href="#">Show Details</a> | <a id="provided-by-link" href="https://www.accuweather.com/en/us/newport-news-va/23606/hourly-weather-forecast/336210">Provided by AccuWeather</a>');
+        $linkDiv.html('<a class="detail-toggle" href="#">Show Details</a> | <a id="provided-by-link" href="https://www.accuweather.com/en/us/newport-news-va/23606/hourly-weather-forecast/336210">Provided by AccuWeather</a>');
 
         if (window.location.search.indexOf('merz=awesome') > -1) {
-            $("#detail-toggle").click();
+            $(".detail-toggle").click();
         }
     });
 
@@ -309,10 +309,10 @@ jlab.loadNWSHourlyWeather = function() {
 
     request.done(function(data) {
 
-        if(typeof data.PeriodNameList == 'object') {
+        if(typeof data.properties == 'object') {
             // good to go.
         } else {
-            console.log("NWS hourly response does not include a PeriodNameList object");
+            console.log("NWS hourly response does not include a properties object");
             return;
         }
 
@@ -320,10 +320,8 @@ jlab.loadNWSHourlyWeather = function() {
             hourlyData = {
             "unixtime":[],
             "windSpeed":[],
-            "cloudAmount":[],
             "pop":[],
             "relativeHumidity":[],
-            "windGust":[],
             "temperature":[],
             "windDirectionCardinal":[],
             "iconLink":[],
@@ -332,25 +330,31 @@ jlab.loadNWSHourlyWeather = function() {
             numHours = 8;
         var row = '<tr><th></th>';
 
-        let periodArray = Object.values(data.PeriodNameList);
+        let periodArray = data.properties.periods;
 
-        for(var i = 0; i < periodArray.length; i++) {
+        var maxHours = 8,
+            loopEnd = periodArray.length;
+
+
+        if(periodArray.length > maxHours) {
+            loopEnd = maxHours;
+        }
+
+        for(var i = 0; i < loopEnd; i++) {
             let period = periodArray[i];
 
-            hourlyData.unixtime = hourlyData.unixtime.concat(data[period].unixtime);
-            hourlyData.windSpeed = hourlyData.windSpeed.concat(data[period].windSpeed);
-            hourlyData.cloudAmount = hourlyData.cloudAmount.concat(data[period].cloudAmount);
-            hourlyData.pop = hourlyData.pop.concat(data[period].pop);
-            hourlyData.relativeHumidity = hourlyData.relativeHumidity.concat(data[period].relativeHumidity);
-            hourlyData.windGust = hourlyData.windGust.concat(data[period].windGust);
-            hourlyData.temperature = hourlyData.temperature.concat(data[period].temperature);
-            hourlyData.windDirectionCardinal = hourlyData.windDirectionCardinal.concat(data[period].windDirectionCardinal);
-            hourlyData.iconLink = hourlyData.iconLink.concat(data[period].iconLink);
-            hourlyData.weather = hourlyData.weather.concat(data[period].weather);
+            hourlyData.unixtime = hourlyData.unixtime.concat(period.startTime);
+            hourlyData.windSpeed = hourlyData.windSpeed.concat(period.windSpeed);
+            hourlyData.pop = hourlyData.pop.concat(period.probabilityOfPrecipitation.value);
+            hourlyData.relativeHumidity = hourlyData.relativeHumidity.concat(period.relativeHumidity.value);
+            hourlyData.temperature = hourlyData.temperature.concat(period.temperature);
+            hourlyData.windDirectionCardinal = hourlyData.windDirectionCardinal.concat(period.windDirection);
+            hourlyData.iconLink = hourlyData.iconLink.concat(period.icon);
+            hourlyData.weather = hourlyData.weather.concat(period.shortForecast);
         }
 
         for (var i = 0; i < numHours; i++) {
-            var d = new Date(hourlyData.unixtime[i] * 1000),
+            var d = new Date(hourlyData.unixtime[i]),
                 qualifier = (d.getHours() < 12) ? 'am' : 'pm',
                 hour = d.getHours() % 12,
                 hour = hour ? hour : 12;
@@ -361,7 +365,7 @@ jlab.loadNWSHourlyWeather = function() {
 
         row = '<tr><th></th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td><img alt="' + hourlyData.weather[i] + '" src="//forecast.weather.gov/images/wtf/small/' + hourlyData.iconLink[i] + '"/></td>';
+            row = row + '<td><img alt="' + hourlyData.weather[i] + '" src="' + hourlyData.iconLink[i] + '"/></td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
@@ -387,9 +391,9 @@ jlab.loadNWSHourlyWeather = function() {
         row = row + '</tr>';
         $tbody.append(row);
 
-        row = '<tr class="info-row"><th>Wind (mph)</th>';
+        row = '<tr class="info-row"><th>Wind</th>';
         for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + Math.round(hourlyData.windSpeed[i]) + ' ' + hourlyData.windDirectionCardinal[i] + '</td>';
+            row = row + '<td>' + hourlyData.windSpeed[i] + ' ' + hourlyData.windDirectionCardinal[i] + '</td>';
         }
         row = row + '</tr>';
         $tbody.append(row);
@@ -408,22 +412,15 @@ jlab.loadNWSHourlyWeather = function() {
         row = row + '</tr>';
         $tbody.append(row);
 
-        row = '<tr class="detail-row"><th>Cloud Cover</th>';
-        for (var i = 0; i < numHours; i++) {
-            row = row + '<td>' + hourlyData.cloudAmount[i] + '%</td>';
-        }
-        row = row + '</tr>';
-        $tbody.append(row);
-
-        var d = new Date(hourlyData.unixtime[0] * 1000);
+        var d = new Date(hourlyData.unixtime[0]);
         var $heading = $("#hourly-table-heading");
         $heading.text("8 Hour Forecast " + jlab.weekNames[d.getDay()] + " " + jlab.monthNames[d.getMonth()] + " " + d.getDate());
 
         var $linkDiv = $("#hourly-table-link");
-        $linkDiv.html('<a id="detail-toggle" href="#">Show Details</a> | <a href="https://www.weather.gov/akq/">Provided by NWS</a>');
+        $linkDiv.html('<a class="detail-toggle" href="#">Show Details</a> | <a href="https://www.weather.gov/akq/">Provided by NWS</a>');
 
         if (window.location.search.indexOf('merz=awesome') > -1) {
-            $("#detail-toggle").click();
+            $(".detail-toggle").click();
         }
     });
 
@@ -517,7 +514,7 @@ jlab.loadNWSHourlyWeatherXml = function() {
 
 
         if (window.location.search.indexOf('merz=awesome') > -1) {
-            $("#detail-toggle").click();
+            $(".detail-toggle").click();
         }
     });
 
@@ -660,9 +657,12 @@ jlab.loadAlerts = function() {
         }
 
         for(var i = 0; i < data.features.length; i++) {
-            var detail = '<li class="alert-details"><b>' + data.features[i].properties.messageType +':</b> ' + data.features[i].properties.headline + '<br/><b>Instructions:</b> ' + (data.features[i].properties.instruction || 'None') + '<br/><b>Description:</b> ' + data.features[i].properties.description + '</li>';
+            var detail = '<li class="alert-details"><b>' + data.features[i].properties.messageType +':</b> ' + data.features[i].properties.headline + '<br/><div class="detail-row"><b>Instructions:</b> ' + (data.features[i].properties.instruction || 'None') + '<br/><b>Description:</b> ' + data.features[i].properties.description + '</div></li>';
             $tickerDetail.append(detail);
         }
+
+        var $linkDiv = $("#alert-table-link");
+        $linkDiv.html('<a class="detail-toggle" href="#">Show Details</a> | <a href="https://www.weather.gov/akq/">Provided by NWS</a>');
     });
 
     request.fail(function(xhr, textStatus) {
@@ -673,13 +673,13 @@ jlab.loadAlerts = function() {
     });
 };
 
-$(document).on("click", "#detail-toggle", function() {
+$(document).on("click", ".detail-toggle", function() {
     if($(this).text() === 'Show Details') {
-        $(".detail-row").show();
-        $("#detail-toggle").text("Hide Details");
+        $(this).parents(".card").find(".detail-row").show();
+        $(this).text("Hide Details");
     } else {
-        $(".detail-row").hide();
-        $("#detail-toggle").text("Show Details");
+        $(this).parents(".card").find(".detail-row").hide();
+        $(this).text("Show Details");
     }
     return false;
 });

@@ -170,7 +170,7 @@ public class HourlyFetch {
     private void fetchNWSHourlyForecast() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://mobile.weather.gov/wtf/MapClick.php?rand=2939.909355260897&lat=37.08&lon=-76.48&FcstType=digitalJSON"))
+                    .uri(new URI("https://api.weather.gov/gridpoints/AKQ/82,61/forecast/hourly"))
                     .timeout(Duration.of(10, SECONDS))
                     .GET()
                     .build();
