@@ -14,7 +14,7 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for disp
 ---
 
 ## Install
-This application requires a Java 11+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).
+This application requires a Java 17+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).
 
 1. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
 2. [Configure](https://github.com/JeffersonLab/weather#configure) Wildfly and start it
@@ -43,7 +43,7 @@ Alternatively recompile the app with the tuckey lib already bundled in the war b
 Optionally set the environment variable `ACCUWEATHER_API_KEY`.  See: https://developer.accuweather.com.  If unset or if the accuweather request fails then forecast data falls back to NWS data.  If AccuWeather data is available, but you'd like to see NWS forecast data append URL parameter `forceNWS` to the app url.
 
 ## Build
-This project is built with [Java 17](https://adoptium.net/) (compiled to Java 11 bytecode), and uses the [Gradle 7](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
+This project is built with [Java 21](https://adoptium.net/) (compiled to Java 17 bytecode), and uses the [Gradle 9](https://gradle.org/) build tool to automatically download dependencies and build the project from source:
 
 ```
 git clone https://github.com/JeffersonLab/weather
