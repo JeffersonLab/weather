@@ -47,7 +47,7 @@
 <script>
     let accuWeatherForecasts = ${accuWeatherForecasts};
 </script>
-<script src="//ace.jlab.org/cdn/jquery/3.6.1.min.js"></script>
+<script src="${isLocalhost ? pageContext.request.contextPath.concat('/resources/js/jquery-3.6.1.min.js') : '//ace.jlab.org/cdn/jquery/3.6.1.min.js'}"></script>
 <script src="${pageContext.request.contextPath}/resources/v${initParam.releaseNumber}/js/weather.js"></script>
 <div>Version: <c:out value="${initParam.releaseNumber}"/>, <c:out value="${initParam.releaseDate}"/>, <a href="https://github.com/JeffersonLab/weather">Home</a></div>
 </body>

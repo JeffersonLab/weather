@@ -29,12 +29,18 @@ public class Overview extends HttpServlet {
 
     boolean accuWeatherForecasts = false;
 
+    String remoteAddr = request.getRemoteAddr();
+
+    // Check if the remote address is a localhost IP address
+    boolean isLocalhost = remoteAddr.equals("127.0.0.1") || remoteAddr.equals("0:0:0:0:0:0:0:1"); // IPv4 and IPv6 localhost
+
     String apiKey = System.getenv("ACCUWEATHER_API_KEY");
 
     if (apiKey != null && !apiKey.isBlank()) {
       accuWeatherForecasts = true;
     }
 
+    request.setAttribute("isLocalhost", isLocalhost);
     request.setAttribute("accuWeatherForecasts", accuWeatherForecasts);
 
     request.getRequestDispatcher("/WEB-INF/views/overview.jsp").forward(request, response);
