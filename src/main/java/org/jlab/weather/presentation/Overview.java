@@ -32,7 +32,9 @@ public class Overview extends HttpServlet {
     String remoteAddr = request.getRemoteAddr();
 
     // Check if the remote address is a localhost IP address
-    boolean isLocalhost = remoteAddr.equals("127.0.0.1") || remoteAddr.equals("0:0:0:0:0:0:0:1"); // IPv4 and IPv6 localhost
+    boolean isLocalhost =
+        remoteAddr.equals("127.0.0.1")
+            || remoteAddr.equals("0:0:0:0:0:0:0:1"); // IPv4 and IPv6 localhost
 
     String apiKey = System.getenv("ACCUWEATHER_API_KEY");
 
