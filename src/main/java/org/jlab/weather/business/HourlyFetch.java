@@ -2,20 +2,20 @@ package org.jlab.weather.business;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.*;
@@ -101,7 +101,7 @@ public class HourlyFetch {
           HttpRequest.newBuilder()
               .uri(
                   new URI(
-                      "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/336210?apikey="
+                      "https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/336210?apikey="
                           + ACCUWEATHER_API_KEY
                           + "&details=true"))
               .timeout(Duration.of(10, SECONDS))
@@ -110,9 +110,32 @@ public class HourlyFetch {
 
       HttpClient client = HttpClient.newHttpClient();
 
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      HttpResponse<InputStream> response =
+          client.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-      String json = response.body();
+      String json = null;
+
+      if (response.headers().firstValue("Content-Encoding").orElse("").equalsIgnoreCase("gzip")) {
+        // Handle GZIP decompression
+        try (GZIPInputStream gis = new GZIPInputStream(response.body())) {
+          byte[] decompressedBytes = gis.readAllBytes();
+          json = new String(decompressedBytes, StandardCharsets.UTF_8);
+        }
+      } else {
+        try (InputStream is = response.body()) {
+          byte[] bytes = is.readAllBytes();
+          json = new String(bytes, StandardCharsets.UTF_8);
+        }
+      }
+
+      String headers = response.headers().toString();
+      int status = response.statusCode();
+
+      System.err.println(status);
+
+      System.err.println(headers);
+
+      System.err.println(json);
 
       JsonParser parser = Json.createParser(new StringReader(json));
       while (parser.hasNext()) {
@@ -144,7 +167,7 @@ public class HourlyFetch {
           HttpRequest.newBuilder()
               .uri(
                   new URI(
-                      "http://dataservice.accuweather.com/forecasts/v1/daily/5day/336210?apikey="
+                      "https://dataservice.accuweather.com/forecasts/v1/daily/5day/336210?apikey="
                           + ACCUWEATHER_API_KEY
                           + "&details=true"))
               .timeout(Duration.of(10, SECONDS))
@@ -153,9 +176,23 @@ public class HourlyFetch {
 
       HttpClient client = HttpClient.newHttpClient();
 
-      HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+      HttpResponse<InputStream> response =
+          client.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-      String json = response.body();
+      String json = null;
+
+      if (response.headers().firstValue("Content-Encoding").orElse("").equalsIgnoreCase("gzip")) {
+        // Handle GZIP decompression
+        try (GZIPInputStream gis = new GZIPInputStream(response.body())) {
+          byte[] decompressedBytes = gis.readAllBytes();
+          json = new String(decompressedBytes, StandardCharsets.UTF_8);
+        }
+      } else {
+        try (InputStream is = response.body()) {
+          byte[] bytes = is.readAllBytes();
+          json = new String(bytes, StandardCharsets.UTF_8);
+        }
+      }
 
       JsonParser parser = Json.createParser(new StringReader(json));
       while (parser.hasNext()) {
