@@ -13,3 +13,15 @@ jobs:
     with:
       files: build/libs/weather.war
     secrets: inherit
+
+  acctest_deploy:
+    permissions:
+      contents: read
+    needs:
+      - release
+    uses: jeffersonlab/general-workflows/.github/workflows/jlab-deploy-app.yaml@v2
+    with:
+      app: weather
+      env: acctest
+      ver: ${{ needs.release.outputs.semver }}
+    secrets: inherit
