@@ -1,6 +1,6 @@
 package org.jlab.weather.business;
 
-import javax.ejb.Singleton;
+import jakarta.ejb.Singleton;
 
 @Singleton
 public class WeatherData {
