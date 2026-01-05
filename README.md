@@ -1,5 +1,5 @@
 # weather [![CI](https://github.com/JeffersonLab/weather/actions/workflows/ci.yaml/badge.svg)](https://github.com/JeffersonLab/weather/actions/workflows/ci.yaml)
-A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for displaying Jefferson Lab weather for use in [Presenter](https://github.com/JeffersonLab/presenter).
+A [Jakarta EE 10](https://en.wikipedia.org/wiki/Jakarta_EE) web application for displaying Jefferson Lab weather for use in [Presenter](https://github.com/JeffersonLab/presenter).
 
 ![Screenshot](https://github.com/JeffersonLab/weather/raw/main/Screenshot.png?raw=true "Screenshot")
 
@@ -14,9 +14,9 @@ A [Java EE 8](https://en.wikipedia.org/wiki/Jakarta_EE) web application for disp
 ---
 
 ## Install
-This application requires a Java 17+ JVM and standard library to run, plus a Java EE 8+ application server (developed with Wildfly).
+This application requires a Java 17+ JVM and standard library to run, plus a Jakarta EE 10 application server (developed with Wildfly).
 
-1. Download [Wildfly 26.1.3](https://www.wildfly.org/downloads/)
+1. Download [Wildfly 37.0.1](https://www.wildfly.org/downloads/)
 2. [Configure](https://github.com/JeffersonLab/weather#configure) Wildfly and start it
 3. Download [weather.war](https://github.com/JeffersonLab/weather/releases) and deploy it to Wildfly
 4. Navigate your web browser to [localhost:8080/weather](http://localhost:8080/weather)
@@ -60,13 +60,13 @@ gradlew build
     - The [Create release](https://github.com/JeffersonLab/java-workflows/blob/main/.github/workflows/gh-release.yaml) GitHub Action to tag the source and create release notes summarizing any pull requests.   Edit the release notes to add any missing details.  A war file artifact is attached to the release.
 
 ## Deploy
-At JLab this app is found at [ace.jlab.org/weather](https://ace.jlab.org/weather) and internally at [acctest.acc.jlab.org/weather](https://acctest.acc.jlab.org/weather).  However, those servers are proxies for `wildfly6.acc.jlab.org` and `wildflytest6.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
+At JLab this app is found at [ace.jlab.org/weather](https://ace.jlab.org/weather) and internally at [acctest.acc.jlab.org/weather](https://acctest.acc.jlab.org/weather).  However, those servers are proxies for `wildfly5.acc.jlab.org` and `wildflytest5.acc.jlab.org` respectively.   A [deploy script](https://github.com/JeffersonLab/wildfly/blob/main/scripts/deploy.sh) is provided to automate wget and deploy.  Example:
 
 ```
-/root/setup/deploy.sh weather v1.2.3
+/opt/wildfly/cd/deploy.sh weather v1.2.3
 ```
 
-**JLab Internal Docs**:  [InstallGuideWildflyRHEL9](https://accwiki.acc.jlab.org/do/view/SysAdmin/InstallGuideWildflyRHEL9)
+**JLab Internal Docs**:  [RHEL9 Wildfly](https://acgdocs.acc.jlab.org/en/ace/builds/rhel9-wildfly)
 
 ## See Also
 - [Developer Notes](https://github.com/JeffersonLab/weather/wiki/Developer-Notes)

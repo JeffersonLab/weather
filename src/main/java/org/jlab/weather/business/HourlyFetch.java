@@ -2,6 +2,12 @@ package org.jlab.weather.business;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import jakarta.ejb.*;
+import jakarta.ejb.Timer;
+import jakarta.json.Json;
+import jakarta.json.stream.JsonParser;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,12 +22,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.ejb.*;
-import javax.ejb.Timer;
-import javax.json.Json;
-import javax.json.stream.JsonParser;
 
 @Singleton
 @Startup
